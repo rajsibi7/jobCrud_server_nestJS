@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Put, Param } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Put, Param, Body, Headers, HttpCode, Res } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import {JopDTO} from './dto/job.dto'
 import { from } from 'rxjs';
@@ -8,28 +8,33 @@ import * as mongoose from 'mongoose';
 @Controller('jobs')
 export class JobsController {
 
+    header = { 'Access-Control-Allow-Origin': '*'};
     constructor(private readonly jobsService : JobsService){
-        console.log(mongoose.connection.readyState);
-    }
 
-    @Get(':id')
-    findAllRecord(@Param('id') id ) : Promise<JobInterface> {
-        console.log('--> mongoose.connection',mongoose.connection.readyState);
-         return this.jobsService.findAll(id)
     }
 
     @Post()
-    createRecord() : string {
-        return 'createRecord works';
+     create(@Body() createCatDto: JopDTO) {
+      return this.jobsService.create(createCatDto);
+    }
+
+    @Get()
+    async findAll(): Promise<JobInterface[]> {
+      return this.jobsService.findAll();
+    }
+
+    @Get(':id')
+    async findone(@Param('id') id: string): Promise<JobInterface> {
+      return this.jobsService.findone(id);
     }
 
     @Put(':id')
-    updateRecord() : string {
-        return 'updateRecord works';
+    update(@Param('id') id: string, @Body() createCatDto: JopDTO) {
+        return this.jobsService.Update(id,createCatDto);
     }
 
     @Delete(':id')
-    deleteRecord() : string {
-        return 'deleteRecord works';
+    delete(@Param('id') id: string) : any {
+        return this.jobsService.delete(id)
     }
 }
