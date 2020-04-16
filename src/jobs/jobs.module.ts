@@ -6,7 +6,7 @@ import { JobSchema} from './schemas/jobs.scehams';
 import { from } from 'rxjs';
 
 @Module({
-  imports: [MongooseModule.forFeature([{name: 'jobTable', schema: JobSchema}])],
+  imports: [MongooseModule.forFeature([{name: 'JobTable', schema: JobSchema}])],
   controllers: [JobsController],
   providers: [JobsService],
 })
